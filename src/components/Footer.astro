@@ -1,6 +1,7 @@
 ---
 import { homeContent } from "../config/home";
 import { siteConfig } from "../config/site";
+import Logo from "./Logo.astro";
 
 const year = new Date().getFullYear();
 ---
@@ -8,7 +9,7 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-brand">
-      <strong>{siteConfig.name.toUpperCase()}</strong>
+      <Logo tagline={true} class="footer-logo" />
       <p>{siteConfig.tagline}</p>
     </div>
 

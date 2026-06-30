@@ -1,9 +1,23 @@
 export const homeContent = {
   hero: {
-    eyebrow: "Robotplus",
-    title: ["Robótica", "móvil"],
-    body: "Robots diseñados para ser increíblemente versátiles, y añadirles módulos superiores puede hacerlos aún más útiles.",
-    action: "Más información",
+    slides: [
+      {
+        eyebrow: "Robotplus",
+        title: ["Robótica", "colaborativa"],
+        body: "Cobots que trabajan mano a mano con tus operarios, sin vallas ni barreras, automatizando tareas repetitivas de forma flexible y segura.",
+        action: "Más información",
+        href: "#robotica-colaborativa",
+        image: "colaborativa",
+      },
+      {
+        eyebrow: "Robotplus",
+        title: ["Robótica", "móvil"],
+        body: "Robots diseñados para ser increíblemente versátiles, y añadirles módulos superiores puede hacerlos aún más útiles.",
+        action: "Más información",
+        href: "#robotica-logistica",
+        image: "movil",
+      },
+    ],
   },
   servicesNav: {
     heading: "Nuestros servicios",

@@ -6,12 +6,18 @@ import Nav from "../components/Nav.astro";
 import { homeContent } from "../config/home";
 import { siteConfig } from "../config/site";
 import heroImage from "../assets/hero.png";
+import bannerImage from "../assets/banner.png";
 import imgColaborativa from "../assets/products/colaborativa.png";
 import imgLogistica from "../assets/products/logistica.png";
 import imgTradicional from "../assets/products/tradicional.png";
 
 const siteUrl = Astro.site ?? new URL("http://localhost:4321");
 const absolute = (path: string) => new URL(path, siteUrl).href;
+
+const slideImages: Record<string, ImageMetadata> = {
+  colaborativa: bannerImage,
+  movil: heroImage,
+};
 
 const productImages: Record<string, ImageMetadata> = {
   "robotica-colaborativa": imgColaborativa,
@@ -55,35 +61,45 @@ const structuredData = {
   <Nav />
 
   <main id="main">
-    <section id="top" class="hero" aria-labelledby="hero-title">
-      <Image
-        class="media-fill"
-        src={heroImage}
-        alt="Operario junto a un robot móvil MiR en un almacén"
-        widths={[768, 1280, 1920]}
-        sizes="100vw"
-        loading="eager"
-        decoding="sync"
-      />
-      <div class="overlay" style="background: var(--grad-vignette);"></div>
-      <div class="overlay" style="background: var(--grad-veil);"></div>
-      <div class="hero-content">
-        <div class="hero-grid">
-          <div class="hero-heading">
-            <p class="label-eyebrow reveal">{homeContent.hero.eyebrow}</p>
-            <h1 id="hero-title" class="hero-title display reveal reveal-delay-1">
-              {homeContent.hero.title[0]}<br />
-              <span class="display-italic grad-text">{homeContent.hero.title[1]}</span>
-            </h1>
-          </div>
+    <section id="top" class="hero hero-slider" aria-label="Presentación">
+      <h1 class="visually-hidden">Robotplus — robótica colaborativa, móvil y tradicional</h1>
+      {homeContent.hero.slides.map((slide, index) => (
+        <div class="hero-slide" data-active={index === 0 ? "true" : "false"}>
+          <Image
+            class="media-fill"
+            src={slideImages[slide.image]}
+            alt={`Robótica ${slide.title[1]}`}
+            widths={[768, 1280, 1920]}
+            sizes="100vw"
+            loading={index === 0 ? "eager" : "lazy"}
+            decoding={index === 0 ? "sync" : "async"}
+          />
+          <div class="overlay" style="background: var(--grad-vignette);"></div>
+          <div class="overlay" style="background: var(--grad-veil);"></div>
+          <div class="hero-content">
+            <div class="hero-grid">
+              <div class="hero-heading">
+                <p class="label-eyebrow">{slide.eyebrow}</p>
+                <p class="hero-title display">
+                  {slide.title[0]}<br />
+                  <span class="display-italic grad-text">{slide.title[1]}</span>
+                </p>
+              </div>
 
-          <div class="hero-copy reveal reveal-delay-2">
-            <p>{homeContent.hero.body}</p>
-            <div class="hero-actions">
-              <a class="button-link" href="#servicios">{homeContent.hero.action} <span aria-hidden="true">-&gt;</span></a>
+              <div class="hero-copy">
+                <p>{slide.body}</p>
+                <div class="hero-actions">
+                  <a class="button-link" href={slide.href}>{slide.action} <span aria-hidden="true">-&gt;</span></a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+      ))}
+      <div class="hero-dots">
+        {homeContent.hero.slides.map((_, index) => (
+          <button type="button" class={index === 0 ? "is-on" : ""} data-i={index} aria-label={`Diapositiva ${index + 1}`}></button>
+        ))}
       </div>
     </section>
 
@@ -217,3 +233,37 @@ const structuredData = {
 
   <Footer />
 </BaseLayout>
+
+<script>
+  const root = document.querySelector(".hero-slider");
+  if (root) {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>(".hero-slide"));
+    const dots = Array.from(root.querySelectorAll<HTMLButtonElement>(".hero-dots button"));
+    let current = 0;
+    let timer: number | undefined;
+
+    const show = (next: number) => {
+      slides[current].dataset.active = "false";
+      dots[current]?.classList.remove("is-on");
+      current = (next + slides.length) % slides.length;
+      slides[current].dataset.active = "true";
+      dots[current]?.classList.add("is-on");
+    };
+
+    const start = () => {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce || slides.length < 2) return;
+      timer = window.setInterval(() => show(current + 1), 5500);
+    };
+
+    dots.forEach((dot, index) =>
+      dot.addEventListener("click", () => {
+        window.clearInterval(timer);
+        show(index);
+        start();
+      }),
+    );
+
+    start();
+  }
+</script>

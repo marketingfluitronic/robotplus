@@ -1,12 +1,12 @@
 ---
 import { siteConfig } from "../config/site";
+import Logo from "./Logo.astro";
 ---
 
 <header class="site-header">
   <div class="nav-grid">
     <a class="brand" href="#top" aria-label={`${siteConfig.name} inicio`}>
-      <span class="brand-mark" aria-hidden="true"></span>
-      <span class="brand-name">{siteConfig.name.toUpperCase()}</span>
+      <Logo tagline={true} />
     </a>
     <nav class="nav-links" aria-label="Navegación principal">
       {siteConfig.nav.map((item) => <a href={item.href}>{item.label}</a>)}

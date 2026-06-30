@@ -1,0 +1,12 @@
+---
+type Props = {
+  class?: string;
+  tagline?: boolean;
+};
+const { class: className, tagline = false } = Astro.props;
+---
+
+<span class={`rp-logo ${className ?? ""}`}>
+  <span class="rp-logo__word grad-text">ROBOTPLUS</span>
+  {tagline && <span class="rp-logo__tag">EMPOWERING INDUSTRY</span>}
+</span>
