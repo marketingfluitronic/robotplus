@@ -9,29 +9,31 @@ const year = new Date().getFullYear();
   <div class="container footer-grid">
     <div class="footer-brand">
       <strong>{siteConfig.name.toUpperCase()}</strong>
-      <p>{homeContent.footer.tagline}</p>
+      <p>{siteConfig.tagline}</p>
+    </div>
+
+    <div class="footer-col">
+      <p class="label-eyebrow">Síguenos</p>
+      <ul>
+        {siteConfig.social.map((item) => (
+          <li><a href={item.href} target="_blank" rel="noreferrer">{item.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <p class="label-eyebrow">Legal</p>
+      <ul>
+        {homeContent.footer.legalLinks.map((item) => (
+          <li><a href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
     </div>
 
     <div class="footer-col">
       <p class="label-eyebrow">Contacto</p>
       <p><a href={`tel:${siteConfig.phoneHref}`}>{siteConfig.phone}</a></p>
       <p><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></p>
-    </div>
-
-    <div class="footer-col">
-      <p class="label-eyebrow">Sedes</p>
-      <ul>
-        {siteConfig.locations.map((location) => (
-          <li>{location.city}{location.region ? ` · ${location.region}` : ""}</li>
-        ))}
-      </ul>
-    </div>
-
-    <div class="footer-col">
-      <p class="label-eyebrow">Partners</p>
-      <ul>
-        {siteConfig.partners.map((partner) => <li>{partner}</li>)}
-      </ul>
     </div>
 
     <div class="footer-bottom">

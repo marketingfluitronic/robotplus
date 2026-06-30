@@ -18,12 +18,14 @@ export const siteConfig = {
   phoneHref: "+34918306006",
   email: "info@robotplus.es",
   nav: [
-    { label: "Servicios", href: "#servicios" },
-    { label: "Sectores", href: "#sectores" },
-    { label: "Nosotros", href: "#nosotros" },
+    { label: "Empresa", href: "#empresa" },
+    { label: "Productos", href: "#servicios" },
+    { label: "Soporte técnico", href: "#contacto" },
+    { label: "Eventos", href: "#" },
+    { label: "Blog", href: "#" },
     { label: "Contacto", href: "#contacto" },
   ],
-  cta: { label: "Solicitar información", href: "#contacto" },
+  cta: { label: "Contacto", href: "#contacto" },
   contactForm: {
     formAction: "mailto:info@robotplus.es",
     method: "post",
@@ -39,7 +41,11 @@ export const siteConfig = {
   effects: {
     reveal: true,
   },
-  social: [{ label: "LinkedIn", href: "https://www.linkedin.com/" }],
+  social: [
+    { label: "Instagram", href: "https://www.instagram.com/" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/" },
+    { label: "YouTube", href: "https://www.youtube.com/" },
+  ],
 } as const;
 
 export type SiteConfig = typeof siteConfig;
