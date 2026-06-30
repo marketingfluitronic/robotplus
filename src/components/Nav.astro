@@ -1,0 +1,26 @@
+---
+import { siteConfig } from "../config/site";
+---
+
+<header class="site-header">
+  <div class="nav-grid">
+    <a class="brand" href="#top" aria-label={`${siteConfig.name} inicio`}>
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">{siteConfig.name.toUpperCase()}</span>
+    </a>
+    <nav class="nav-links" aria-label="Navegación principal">
+      {siteConfig.nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      <a class="button-link button-link--outline" href={siteConfig.cta.href}>
+        <span class="ember-dot" aria-hidden="true"></span>
+        {siteConfig.cta.label}
+      </a>
+    </nav>
+    <details class="mobile-nav">
+      <summary class="mobile-nav__toggle">Menú</summary>
+      <nav class="mobile-nav__panel" aria-label="Navegación móvil">
+        {siteConfig.nav.map((item) => <a href={item.href}>{item.label}</a>)}
+        <a class="button-link" href={siteConfig.cta.href}>{siteConfig.cta.label}</a>
+      </nav>
+    </details>
+  </div>
+</header>

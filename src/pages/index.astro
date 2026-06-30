@@ -1,0 +1,270 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Footer from "../components/Footer.astro";
+import Nav from "../components/Nav.astro";
+import RobotMark from "../components/RobotMark.astro";
+import { homeContent } from "../config/home";
+import { siteConfig } from "../config/site";
+
+const siteUrl = Astro.site ?? new URL("http://localhost:4321");
+const absolute = (path: string) => new URL(path, siteUrl).href;
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: siteConfig.legalName,
+  alternateName: siteConfig.name,
+  description: siteConfig.description,
+  url: new URL(Astro.url.pathname, siteUrl).href,
+  logo: absolute(siteConfig.defaultImage),
+  image: absolute(siteConfig.defaultImage),
+  telephone: siteConfig.phone,
+  email: siteConfig.email,
+  slogan: siteConfig.tagline,
+  areaServed: "ES",
+  address: siteConfig.locations.map((location) => ({
+    "@type": "PostalAddress",
+    streetAddress: location.address,
+    addressLocality: location.city,
+    addressRegion: location.region,
+    addressCountry: "ES",
+  })),
+  sameAs: siteConfig.social.map((item) => item.href),
+};
+---
+
+<BaseLayout image={siteConfig.defaultImage} structuredData={structuredData}>
+  <Nav />
+
+  <main id="main">
+    <section id="top" class="hero" aria-labelledby="hero-title">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="layer hero-grid-lines"></div>
+        <div class="layer hero-glow"></div>
+        <div class="layer hero-stars"></div>
+        <RobotMark class="hero-robot hero-robot--left" />
+        <RobotMark class="hero-robot hero-robot--right" />
+      </div>
+      <div class="overlay" style="background: var(--grad-vignette);"></div>
+      <div class="overlay" style="background: var(--grad-veil);"></div>
+      <div class="hero-content">
+        <div class="hero-grid">
+          <div class="hero-heading">
+            <p class="label-eyebrow reveal">{homeContent.hero.eyebrow}</p>
+            <h1 id="hero-title" class="hero-title display reveal reveal-delay-1">
+              {homeContent.hero.title[0]}<br />
+              <span class="display-italic grad-text">{homeContent.hero.title[1]}</span><br />
+              {homeContent.hero.title[2]}
+            </h1>
+          </div>
+
+          <div class="hero-copy reveal reveal-delay-2">
+            <p>{homeContent.hero.body}</p>
+            <div class="hero-actions">
+              <a class="button-link" href={siteConfig.cta.href}>{homeContent.hero.action} <span aria-hidden="true">-&gt;</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="marquee" aria-label="Tecnologías Robotplus">
+      <div class="marquee-track">
+        {[...homeContent.marquee, ...homeContent.marquee].map((item) => (
+          <span>
+            {item}
+            <b aria-hidden="true">*</b>
+          </span>
+        ))}
+      </div>
+    </section>
+
+    <section id="concept" class="section concept-section">
+      <div class="container section-grid">
+        <div class="section-kicker">
+          <p class="label-eyebrow reveal">{homeContent.concept.eyebrow}</p>
+        </div>
+        <h2 class="section-heading display reveal">
+          {homeContent.concept.heading[0]}<br />
+          <span class="display-italic grad-text">{homeContent.concept.heading[1]}</span><br />
+          {homeContent.concept.heading[2]}
+        </h2>
+
+        <div class="text-block reveal reveal-delay-1">
+          {homeContent.concept.body.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+
+        <figure class="figure-detail reveal">
+          <div class="image-frame aspect-3-4 brand-panel brand-panel--portrait">
+            <RobotMark class="panel-robot" />
+          </div>
+          <figcaption class="label-eyebrow" style="margin-top: 1rem;">{homeContent.concept.caption}</figcaption>
+        </figure>
+
+        <div class="fire-block reveal">
+          <div class="fire-media image-frame aspect-16-10 brand-panel brand-panel--wide">
+            <span class="panel-tag label-eyebrow">Integración llave en mano</span>
+          </div>
+          <div class="quote-block">
+            <blockquote>"{homeContent.concept.quote}"</blockquote>
+            <p class="label-eyebrow" style="margin-top: 1.5rem;">- {homeContent.concept.quoteByline}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="servicios" class="section surface-section">
+      <div class="container section-grid">
+        <div class="section-kicker">
+          <p class="label-eyebrow reveal">{homeContent.services.eyebrow}</p>
+        </div>
+        <h2 class="section-heading display reveal">
+          {homeContent.services.heading[0]}<br />
+          <span class="display-italic grad-text">{homeContent.services.heading[1]}</span>
+        </h2>
+
+        <aside class="menu-aside reveal" aria-label="Notas de servicio">
+          <div class="image-frame aspect-3-4 brand-panel brand-panel--portrait">
+            <RobotMark class="panel-robot" />
+          </div>
+          <p class="label-eyebrow" style="margin-top: 1rem;">{homeContent.services.caption}</p>
+          <div class="hairline" style="margin-block: 2rem 1.5rem;"></div>
+          <p style="color: var(--muted-foreground); line-height: 1.6;">
+            {homeContent.services.note}
+          </p>
+        </aside>
+
+        <ol class="course-list">
+          {homeContent.services.items.map((service) => (
+            <li class="course reveal">
+              <span class="course-number">{service.number}</span>
+              <h3>{service.title} {service.accent && <span class="display-italic">{service.accent}</span>}</h3>
+              <p>{service.body}</p>
+              <span class="pairing">{service.tag}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section id="nosotros" class="section">
+      <div class="container section-grid">
+        <div class="section-kicker">
+          <p class="label-eyebrow reveal">{homeContent.about.eyebrow}</p>
+        </div>
+        <h2 class="section-heading display reveal">
+          {homeContent.about.heading.line1}<br />
+          <span class="display-italic grad-text">{homeContent.about.heading.accent}</span> {homeContent.about.heading.rest}
+        </h2>
+
+        <div class="chef-media image-frame aspect-4-5 brand-panel brand-panel--portrait reveal">
+          <RobotMark class="panel-robot" />
+        </div>
+
+        <div class="chef-bio reveal reveal-delay-1">
+          <p class="chef-quote">
+            "{homeContent.about.quote}"
+          </p>
+          <div class="hairline" style="margin-block: 2.5rem;"></div>
+          <ul class="facts">
+            {homeContent.about.facts.map((fact) => (
+              <li>
+                <span class="fact-value grad-text">{fact.value}</span>
+                <span>{fact.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="sectores" class="surface-section">
+      <div class="sector-hero brand-panel brand-panel--banner">
+        <div class="overlay" style="background: var(--grad-veil);"></div>
+        <div class="sector-caption">
+          <p class="label-eyebrow">{homeContent.sectors.eyebrow}</p>
+          <h2 class="display">
+            {homeContent.sectors.heading.lead} <span class="display-italic grad-text">{homeContent.sectors.heading.accent}</span>
+            {homeContent.sectors.heading.rest}
+          </h2>
+        </div>
+      </div>
+
+      <div class="container section">
+        <div class="feature-grid">
+          {homeContent.sectors.items.map((sector) => (
+            <section class="sector-card reveal">
+              <span class="sector-icon" aria-hidden="true">{sector.icon}</span>
+              <p class="sector-title">{sector.title}</p>
+              <p>{sector.body}</p>
+            </section>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="section reservation">
+      <div class="overlay" style="background: var(--grad-vignette);"></div>
+
+      <div class="container section-grid">
+        <div class="reservation-copy">
+          <p class="label-eyebrow reveal">{homeContent.contact.eyebrow}</p>
+          <h2 class="display reveal">
+            {homeContent.contact.heading[0]}<br />
+            <span class="display-italic grad-text">{homeContent.contact.heading[1]}</span><br />
+            {homeContent.contact.heading[2]}
+          </h2>
+          <p class="reveal reveal-delay-1">{homeContent.contact.body}</p>
+          <div class="reservation-facts reveal reveal-delay-2">
+            <div>
+              <p class="label-eyebrow">Teléfono</p>
+              <p><a href={`tel:${siteConfig.phoneHref}`}>{siteConfig.phone}</a></p>
+            </div>
+            <div>
+              <p class="label-eyebrow">Email</p>
+              <p><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></p>
+            </div>
+          </div>
+        </div>
+
+        <form class="reservation-form reveal" action={siteConfig.contactForm.formAction} method={siteConfig.contactForm.method} enctype="text/plain">
+          <p class="label-eyebrow">{homeContent.contact.formTitle}</p>
+          <div class="form-grid">
+            <div class="form-field--full">
+              <label class="label-eyebrow" for="name">Nombre <span aria-hidden="true">*</span></label>
+              <input id="name" name="name" autocomplete="name" required />
+            </div>
+            <div>
+              <label class="label-eyebrow" for="company">Empresa</label>
+              <input id="company" name="company" autocomplete="organization" />
+            </div>
+            <div>
+              <label class="label-eyebrow" for="email">Email <span aria-hidden="true">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div>
+              <label class="label-eyebrow" for="phone">Teléfono</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" />
+            </div>
+            <div>
+              <label class="label-eyebrow" for="sector">Sector</label>
+              <select id="sector" name="sector">
+                {[...homeContent.sectors.items.map((sector) => sector.title), "Otro"].map((option) => (
+                  <option value={option}>{option}</option>
+                ))}
+              </select>
+            </div>
+            <div class="form-field--full">
+              <label class="label-eyebrow" for="message">Cuéntanos tu proyecto</label>
+              <textarea id="message" name="message" rows="3" placeholder="Proceso a automatizar, volumen, plazos, lo que necesites."></textarea>
+            </div>
+          </div>
+          <button class="form-button" type="submit">Enviar solicitud <span aria-hidden="true">-&gt;</span></button>
+          <p style="color: var(--muted-foreground); font-size: 0.85rem;">{homeContent.contact.confirmation}</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

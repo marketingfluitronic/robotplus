@@ -1,0 +1,36 @@
+---
+type Props = {
+  class?: string;
+};
+const { class: className } = Astro.props;
+const gradId = `rl-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<svg
+  class={className}
+  viewBox="0 0 200 320"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="Robot Robotplus"
+>
+  <defs>
+    <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3CC34A"></stop>
+      <stop offset="0.5" stop-color="#1FA890"></stop>
+      <stop offset="1" stop-color="#1B9BC4"></stop>
+    </linearGradient>
+  </defs>
+  <rect x="60" y="150" width="80" height="110" rx="18" fill={`url(#${gradId})`}></rect>
+  <rect x="70" y="40" width="60" height="80" rx="22" fill="#0e201c" stroke={`url(#${gradId})`} stroke-width="3"></rect>
+  <circle cx="88" cy="78" r="9" fill="#3CC34A"></circle>
+  <circle cx="112" cy="78" r="9" fill="#1B9BC4"></circle>
+  <rect x="95" y="120" width="10" height="30" fill={`url(#${gradId})`}></rect>
+  <rect x="20" y="160" width="40" height="16" rx="8" fill={`url(#${gradId})`} transform="rotate(-25 40 168)"></rect>
+  <rect x="140" y="160" width="40" height="16" rx="8" fill={`url(#${gradId})`} transform="rotate(25 160 168)"></rect>
+  <circle cx="100" cy="30" r="6" fill="#3CC34A"></circle>
+  <line x1="100" y1="36" x2="100" y2="44" stroke="#1FA890" stroke-width="3"></line>
+  <rect x="72" y="258" width="22" height="50" rx="10" fill="#0e201c"></rect>
+  <rect x="106" y="258" width="22" height="50" rx="10" fill="#0e201c"></rect>
+  <rect x="75" y="180" width="50" height="6" rx="3" fill="rgba(255,255,255,.5)"></rect>
+  <rect x="75" y="195" width="34" height="6" rx="3" fill="rgba(255,255,255,.35)"></rect>
+</svg>

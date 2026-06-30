@@ -1,38 +1,55 @@
 # Robotplus
 
-Landing page de **Robotplus, S.L.** — _Empowering Industry · by Fluitronic_.
+Web de **Robotplus, S.L.** — _Empowering Industry · by Fluitronic_.
 
-Sitio web estático (HTML, CSS y JavaScript vanilla, sin dependencias ni proceso de build).
+Sitio construido con [Astro](https://astro.build) sobre la plantilla
+[Ombra](https://github.com/andreialba/ombra) (MIT), adaptada a la identidad
+de Robotplus: robótica colaborativa, móvil y tradicional.
 
 ## Estructura
 
 ```
 robotplus/
-├── index.html    # Página principal
-├── styles.css    # Estilos
-└── script.js     # Parallax, scroll-spy y animaciones de revelado
+├── astro.config.mjs        # Config Astro (site + base /robotplus)
+├── src/
+│   ├── config/
+│   │   ├── site.ts         # Metadatos, navegación, contacto, sedes, partners
+│   │   └── home.ts         # Contenido de la home (hero, servicios, sectores…)
+│   ├── components/         # Nav, Footer, SeoHead, RobotMark
+│   ├── layouts/BaseLayout.astro
+│   ├── pages/index.astro   # Página principal
+│   └── styles.css          # Estilos y paleta de marca
+└── public/og.png           # Imagen para redes sociales
 ```
+
+Casi todo el contenido se edita en `src/config/site.ts` y `src/config/home.ts`
+sin tocar código.
 
 ## Desarrollo local
 
-No hace falta instalar nada. Basta con abrir `index.html` en el navegador, o
-servir la carpeta con un servidor estático para evitar restricciones de rutas:
+Requiere Node.js 22.12 o superior.
 
 ```bash
-# Con Python
-python -m http.server 8000
-
-# O con Node
-npx serve .
+npm install
+npm run dev      # servidor de desarrollo (http://localhost:4321/robotplus)
 ```
 
-Luego abre http://localhost:8000
+Otros comandos:
+
+```bash
+npm run build    # compila el sitio en dist/
+npm run preview  # sirve la versión compilada
+npm run check    # comprobación de tipos de Astro
+```
 
 ## Despliegue
 
-Al ser un sitio estático, se puede publicar tal cual en cualquier hosting
-estático (GitHub Pages, Netlify, Vercel, Cloudflare Pages, etc.) subiendo
-los tres archivos.
+Se publica en **GitHub Pages** mediante GitHub Actions
+(`.github/workflows/deploy.yml`): cada push a `main` compila el sitio y lo
+despliega. Requiere que en _Settings → Pages → Source_ esté seleccionado
+**GitHub Actions**.
+
+URL: https://marketingfluitronic.github.io/robotplus/
 
 ---
 © 2026 ROBOTPLUS, S.L. Todos los derechos reservados.
