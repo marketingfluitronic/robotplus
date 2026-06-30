@@ -1,13 +1,31 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Footer from "../components/Footer.astro";
 import Nav from "../components/Nav.astro";
-import RobotMark from "../components/RobotMark.astro";
 import { homeContent } from "../config/home";
 import { siteConfig } from "../config/site";
+import heroImage from "../assets/hero.png";
+import imgColaborativa from "../assets/products/colaborativa.png";
+import imgLogistica from "../assets/products/logistica.png";
+import imgTradicional from "../assets/products/tradicional.png";
 
 const siteUrl = Astro.site ?? new URL("http://localhost:4321");
 const absolute = (path: string) => new URL(path, siteUrl).href;
+
+const productImages: Record<string, ImageMetadata> = {
+  "robotica-colaborativa": imgColaborativa,
+  "robotica-logistica": imgLogistica,
+  "robotica-tradicional": imgTradicional,
+};
+
+const partnerModules = import.meta.glob<{ default: ImageMetadata }>("../assets/partners/*.png", { eager: true });
+const partners = Object.entries(partnerModules)
+  .map(([path, mod]) => ({
+    src: mod.default,
+    name: path.split("/").pop()!.replace(/\.png$/, "").replace(/-/g, " "),
+  }))
+  .sort((a, b) => a.name.localeCompare(b.name));
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -31,12 +49,6 @@ const structuredData = {
   })),
   sameAs: siteConfig.social.map((item) => item.href),
 };
-
-const imageCaption: Record<string, string> = {
-  cobot: "Imagen: brazo colaborativo (Universal Robots)",
-  amr: "Imagen: AMR MiR",
-  yamaha: "Imagen: robot cartesiano Yamaha",
-};
 ---
 
 <BaseLayout image={siteConfig.defaultImage} structuredData={structuredData}>
@@ -44,13 +56,15 @@ const imageCaption: Record<string, string> = {
 
   <main id="main">
     <section id="top" class="hero" aria-labelledby="hero-title">
-      <div class="hero-bg" aria-hidden="true">
-        <div class="layer hero-grid-lines"></div>
-        <div class="layer hero-glow"></div>
-        <div class="layer hero-stars"></div>
-        <RobotMark class="hero-robot hero-robot--left" />
-        <RobotMark class="hero-robot hero-robot--right" />
-      </div>
+      <Image
+        class="media-fill"
+        src={heroImage}
+        alt="Operario junto a un robot móvil MiR en un almacén"
+        widths={[768, 1280, 1920]}
+        sizes="100vw"
+        loading="eager"
+        decoding="sync"
+      />
       <div class="overlay" style="background: var(--grad-vignette);"></div>
       <div class="overlay" style="background: var(--grad-veil);"></div>
       <div class="hero-content">
@@ -94,8 +108,14 @@ const imageCaption: Record<string, string> = {
     {homeContent.products.map((product, index) => (
       <section id={product.id} class={`section product-section ${index % 2 === 1 ? "surface-section" : ""}`}>
         <div class={`container product ${index % 2 === 1 ? "product--reverse" : ""}`}>
-          <div class="product-media image-frame aspect-16-10 brand-panel brand-panel--wide reveal">
-            <span class="panel-tag label-eyebrow">{imageCaption[product.image]}</span>
+          <div class="product-media reveal">
+            <Image
+              src={productImages[product.id]}
+              alt={product.title}
+              widths={[480, 768, 1000]}
+              sizes="(max-width: 900px) 90vw, 45vw"
+              loading="lazy"
+            />
           </div>
           <div class="product-copy reveal reveal-delay-1">
             <h3 class="product-title display">{product.title}</h3>
@@ -125,11 +145,11 @@ const imageCaption: Record<string, string> = {
     <section id="partners" class="section surface-section">
       <div class="container">
         <h2 class="services-title display reveal">{homeContent.partners.heading}</h2>
-        <ul class="partners-row reveal">
-          {homeContent.partners.items.map((partner) => (
-            <li class="partner-logo">{partner}</li>
+        <div class="partners-strip reveal">
+          {partners.map((partner) => (
+            <Image class="partner-logo" src={partner.src} alt={partner.name} height={44} loading="lazy" />
           ))}
-        </ul>
+        </div>
       </div>
     </section>
 
